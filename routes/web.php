@@ -23,11 +23,13 @@ Route::get('cart', 'ShoppingController@getCart')->middleware('auth');
 Route::post('cart', 'ShoppingController@postCart')->middleware('auth');
 Route::get('pay', 'ShoppingController@getPay')->middleware('auth');
 Route::get('payementOK', 'ShoppingController@payementOK')->middleware('auth');
+Route::post('payementOK', 'ShoppingController@postPayementOK')->middleware('auth');
 Route::get('shopping', 'ShoppingController@getShoppingPage')->name('shopping');
 Route::get('add/{id}', 'ShoppingController@addToCart')->middleware('auth');
 Route::get('/download', 'ShoppingController@DownloadCV');
 Route::get('contact','ShoppingController@getContact');
 Route::post('contact','ShoppingController@SendMail');
+Route::get('admin', 'ShoppingController@admin')->middleware('auth');
 
 Route::get('emptyCart', 'ShoppingController@emptyCart')->middleware('auth');
 

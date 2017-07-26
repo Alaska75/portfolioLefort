@@ -12,6 +12,16 @@
             <a class="navbar-brand" href="{{URL::to('/')}}">Benjamin Lefort</a>
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
+        <?php
+            if (isset(\Auth::user()->role))
+                {
+                    $user_role = \Auth::user()->role;
+                }
+            else
+                {
+                    $user_role = false;
+                }
+        ?>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
             <ul class="nav navbar-nav">
@@ -26,10 +36,10 @@
             @if(Auth::guest())
                 <ul class="nav navbar-nav">
                     <li>
-                        <a href="{{URL::to('login')}}">Login</a>
+                        <a href="{{URL::to('login')}}">login</a>
                     </li>
                     <li>
-                        <a href="{{URL::to('register')}}">Register</a>
+                        <a href="{{URL::to('register')}}">register</a>
                     </li>
                 </ul>
             @else
@@ -50,6 +60,14 @@
                        {{ csrf_field() }}
                    </li>
                </ul>
+
+            @if($user_role == true)
+                    <ul class="nav navbar-nav">
+                        <li>
+                            <a href="{{URL::to('admin')}}">Admin</a>
+                        </li>
+                    </ul>
+             @endif
                 <?php
                 $products = session('cart');
                 $tests = $products;

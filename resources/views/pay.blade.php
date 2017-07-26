@@ -21,74 +21,121 @@
         $nbr_products++;
     }
     ?>
-    <div class="container text-center">
-        <style>
-            .panel-title {display: inline;font-weight: bold;}
-            .checkbox.pull-right { margin: 0; }
-            .pl-ziro { padding-left: 0px; }
-        </style>
-        <div class="container-fluid">
-            <div class='row'>
-                <div class='col-md-4'></div>
-                <div class='col-md-4'>
-                    <script src='https://js.stripe.com/v2/' type='text/javascript'></script>
-                    <form accept-charset="UTF-8" action="{{URL::to('payementOK')}}" class="require-validation"  id="payment-form" method="get">
+    <style>
+        .panel-title {display: inline;font-weight: bold;}
+        .checkbox.pull-right { margin: 0; }
+        .pl-ziro { padding-left: 0px; }
+    </style>
+    <form accept-charset="UTF-8" action="{{URL::to('payementOK')}}" class="require-validation"  id="payment-form" method="post">
+        {{csrf_field()}}
+
+        <div class="container text-center">
+
+            <div class="container-fluid">
+
+                <div class='row'>
+                    <h1>Adresse d'envoi</h1>
+
+                    <div class='col-md-4'>
+
+                    </div>
+                    <div class='col-md-4'>
 
                         <div class='form-row'>
                             <div class='col-xs-12 form-group required'>
-                                <label class='control-label'>Name on Card</label>
-                                <input class='form-control' size='4' type='text'>
+                                <label class='control-label'>Adresse</label>
+                                <input class='form-control' name="adresse" type='text'>
                             </div>
                         </div>
                         <div class='form-row'>
                             <div class='col-xs-12 form-group card required'>
-                                <label class='control-label'>Card Number</label>
-                                <input autocomplete='off' class='form-control card-number' size='20' type='text'>
+                                <label class='control-label'>Code postale</label>
+                                <input autocomplete='off' class='form-control card-number' name="zip" type='text'>
                             </div>
                         </div>
                         <div class='form-row'>
-                            <div class='col-xs-4 form-group cvc required'>
-                                <label class='control-label'>CVC</label>
-                                <input autocomplete='off' class='form-control card-cvc' placeholder='ex. 311' size='4' type='text'>
-                            </div>
-                            <div class='col-xs-4 form-group expiration required'>
-                                <label class='control-label'>Expiration</label>
-                                <input class='form-control card-expiry-month' placeholder='MM' size='2' type='text'>
-                            </div>
-                            <div class='col-xs-4 form-group expiration required'>
-                                <label class='control-label'> </label>
-                                <input class='form-control card-expiry-year' placeholder='YYYY' size='4' type='text'>
+                            <div class='col-xs-12 form-group card required'>
+                                <label class='control-label'>Ville</label>
+                                <input autocomplete='off' class='form-control card-number' name="ville" type='text'>
                             </div>
                         </div>
                         <div class='form-row'>
-                            <div class='col-md-12'>
-                                <div class='form-control total btn btn-info'>
-                                    Total:
-                                    <span class='amount'>{{$total}}€</span>
-                                </div>
+                            <div class='col-xs-12 form-group card required'>
+                                <label class='control-label'>Pays</label>
+                                <input autocomplete='off' class='form-control card-number' name="pays" type='text'>
                             </div>
                         </div>
-                        <div class='form-row'>
-                            <div class='col-md-12 form-group'>
-                                <button class='form-control btn btn-primary submit-button' type='submit'>Pay »</button>
-                            </div>
-                        </div>
-                        <div class='form-row'>
-                            <div class='col-md-12 error form-group hide'>
-                                <div class='alert-danger alert'>
-                                    Please correct the errors and try again.
-                                </div>
-                            </div>
-                        </div>
-                    </form>
+                    </div>
                 </div>
-                <div class='col-md-4'></div>
             </div>
         </div>
 
 
 
-    </div>
+
+
+        <div class="container-fluid">
+            <div class='row'>
+                <div class='col-md-4'>
+
+                </div>
+                <div class='col-md-4'>
+                    <script src='https://js.stripe.com/v2/' type='text/javascript'></script>
+
+                    <div class='form-row'>
+                        <div class='col-xs-12 form-group required'>
+                            <label class='control-label'>Name on Card</label>
+                            <input class='form-control' size='4' type='text'>
+                        </div>
+                    </div>
+                    <div class='form-row'>
+                        <div class='col-xs-12 form-group card required'>
+                            <label class='control-label'>Card Number</label>
+                            <input autocomplete='off' class='form-control card-number' size='20' type='text'>
+                        </div>
+                    </div>
+                    <div class='form-row'>
+                        <div class='col-xs-4 form-group cvc required'>
+                            <label class='control-label'>CVC</label>
+                            <input autocomplete='off' class='form-control card-cvc' placeholder='ex. 311' size='4' type='text'>
+                        </div>
+                        <div class='col-xs-4 form-group expiration required'>
+                            <label class='control-label'>Expiration</label>
+                            <input class='form-control card-expiry-month' placeholder='MM' size='2' type='text'>
+                        </div>
+                        <div class='col-xs-4 form-group expiration required'>
+                            <label class='control-label'> </label>
+                            <input class='form-control card-expiry-year' placeholder='YYYY' size='4' type='text'>
+                        </div>
+                    </div>
+                    <div class='form-row'>
+                        <div class='col-md-12'>
+                            <div class='form-control total btn btn-info'>
+                                Total:
+                                <span class='amount'>{{$total}}€</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='form-row'>
+                        <div class='col-md-12 form-group'>
+                            <button class='form-control btn btn-primary submit-button' type='submit'>Pay »</button>
+                        </div>
+                    </div>
+                    <div class='form-row'>
+                        <div class='col-md-12 error form-group hide'>
+                            <div class='alert-danger alert'>
+                                Please correct the errors and try again.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class='col-md-4'></div>
+            </div>
+        </div>
+    </form>
+
+
+
 
 
     <!-- The popover content -->

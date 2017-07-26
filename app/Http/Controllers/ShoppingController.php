@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use Illuminate\Http\Request;
 use Anam\Phpcart\Cart;
+use \App\Order;
+use Illuminate\Support\Facades\Redirect;
 
 class ShoppingController extends Controller
 {
@@ -25,12 +28,15 @@ class ShoppingController extends Controller
         $cart = new Cart();
 
         $cart->clear();
+        \Session::forget('cart');
         return view('payementOK');
     }
     function getPay()
     {
         return view('pay');
     }
+
+
     function getShoppingPage()
     {
         return view('shopping');
@@ -61,7 +67,9 @@ class ShoppingController extends Controller
     function emptyCart()
     {
         $cart = new Cart();
-        $cart->clear();
+        $poulet = $cart->clear();
+        \Session::forget('cart');
+
         return view('shopping');
     }
 
@@ -72,10 +80,55 @@ class ShoppingController extends Controller
         \Mail::send('mail.GetContact', $data,
             function ($message)
             {
-                $message->to("yoahn.l@me.com");
-                $message->subject('ceci est un test');
+                $message->to("benjamin.lefort@gmx.fr");
+                $message->subject('Message de ');
             }
         );
         return redirect('/');
+    }
+
+    function postPayementOK()
+    {
+        $request = Request();
+
+        $order = new Order;
+        $cart = new Cart();
+        $tmp_string = $request->adresse.'/./'.$request->zip.'/./'.$request->ville.'/./'.$request->pays;
+        $tmp_array = explode('/./', $tmp_string);
+
+        $user_id = \Auth::user()->id;
+        $price = $cart->getTotal();
+        $adresse = json_encode($tmp_array);
+        $payement_ok = true;
+
+        try
+        {
+            $order->user_id = $user_id;
+            $order->price = $price;
+            $order->address = $adresse;
+            $order->payement_ok = $payement_ok;
+
+            $order->save();
+        }
+        catch (\Exception $e)
+        {
+            echo $e;
+        }
+        $poulet = $cart->clear();
+        \Session::forget('cart');
+        return view('payementOK');
+
+    }
+
+    function admin()
+    {
+        $orders = Order::all();
+        $users  = User::all();
+        if ((\Auth::user()->role) == false)
+        {
+            return Redirect('/');
+        }
+
+        return view('admin', compact('orders', 'users'));
     }
 }
